@@ -1,4 +1,4 @@
-import http from 'node:http'
+import http from "node:http";
 
 // - Criar usuários
 // - Listagem usuários
@@ -20,18 +20,32 @@ import http from 'node:http'
 // GET /users => Buscando usuários no banc-end
 // POST /users => Criar um usuário no back-end
 
+// Stateful - Stateless
+
+// Cabeçalhos (Requisição/resposta) => Metadados
+
+const users = [];
+
 const server = http.createServer((req, res) => {
-  const { method, url } = req
+  const { method, url } = req;
 
-  if (method === 'GET' && url === '/users') {
-    return res.end('Listagem de usuários')
+  if (method === "GET" && url === "/users") {
+    return res
+      .setHeader("Content-type", "application/json")
+      .end(JSON.stringify(users));
   }
 
-  if (method === 'POST' && url === '/users') {
-    return res.end('Criação de usuário')
+  if (method === "POST" && url === "/users") {
+    users.push({
+      id: 1,
+      name: "John Doe",
+      email: "johndoe@example.com",
+    });
+
+    return res.end("Criação de usuário");
   }
 
-  return res.end('Hello World')
-})
+  return res.end("Hello World");
+});
 
-server.listen(3333)
+server.listen(3333);
